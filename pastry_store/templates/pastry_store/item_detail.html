@@ -1,0 +1,98 @@
+{% extends 'pastry_store/base.html' %}
+
+{% load static %}
+
+{% block title %} First Page {% endblock %}
+
+{% block style %} 
+<style>
+
+.product-image {
+    width: 15rem;
+    height: 15rem;
+    border-radius: 30%;
+}
+
+ul.product-card-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.product-card {
+    flex: 0 0 calc(33.33% - 20px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.product-card-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-description {
+    width: 15rem;
+    font-size: 12px;
+}
+</style>
+
+{% endblock %}
+
+{% block context %}
+
+
+
+
+
+<ul class="product-card-list">
+    {% for product in products %}
+        <li>
+            <div class="product-card" style="width: 18rem;">
+                <div class="product-card-content">
+                    <img src="{{ product.image.url }}" alt="{{ product.product_name }}" class="product-image">
+                    <div class="product-details">
+                        <h3>{{ product.product_name }}</h3>
+                        <p class="product-description">{{ product.description }}</p>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-price"><span>&#8377;</span>{{ product.price }}</p>
+                        {% if product.cart %}
+                        <a href="{% url 'pastry_store:update_cart' product.id 'minus' %}"><button id='minus' class='btn btn-primary minus'>-</button></a>
+                        <span>{{product.quantity}}</span>
+                        <a href="{% url 'pastry_store:update_cart' product.id 'plus' %}"><button id='plus' class='btn btn-primary plus'>+</button></a>
+                        {% else %}
+                        <span id="divpr{{product.id}}" class="divpr">
+                            <a href="{% url 'pastry_store:add_to_cart' product.id %}">
+                                <button id="{{ product.id }}" class="card-link add-to-cart-button" style="width:100%;">Add to Cart</button>
+                            </a>
+                        </span>
+                        {% endif %} 
+
+
+                    </div>
+                </div>
+            </div>
+        </li>
+    {% empty %}
+        <p>No products found for category "{{ category }}".</p>
+    {% endfor %}
+</ul>
+
+
+{% endblock %}
+
+
+{% block script %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+</script>
+{% endblock %}
